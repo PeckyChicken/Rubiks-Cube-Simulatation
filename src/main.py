@@ -629,7 +629,7 @@ while True:
     sequence = sequence.replace(".","")
 
     if sequence == "pi":
-        mp.dps = 10000
+        mp.dps = 1000
         sequence = str(mp.pi).replace(".","")
         print(sequence, type(sequence))
 
