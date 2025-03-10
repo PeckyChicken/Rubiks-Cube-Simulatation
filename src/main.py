@@ -1,6 +1,10 @@
 # Importing neeeded packages
-from vpython import *
+from math import pi
+from typing import Callable
+
 import numpy as np
+from vpython import *
+from mpmath import mp
 
 # Creating arrows to show axises
 arrowLength = 1.52
@@ -599,7 +603,43 @@ button(bind=Fpr_move, text="  F'  ", background=color.green, color=color.black)
 scene.append_to_caption('\t')
 button(bind=lambda: F_move(2), text="  F2  ", background=color.green, color=color.black)
 
+moves: dict[str,Callable] = {
+    "0": lambda: R_move(1),
+    "1": lambda: Rpr_move(1),
+    "2": lambda: R_move(2),
+    "3": lambda: U_move(1),
+    "4": lambda: Upr_move(1),
+    "5": lambda: U_move(2),
+    "6": lambda: B_move(1),
+    "7": lambda: Bpr_move(1),
+    "8": lambda: B_move(2),
+    "9": lambda: L_move(1),
+    "A": lambda: Lpr_move(1),
+    "B": lambda: L_move(2),
+    "C": lambda: D_move(1),
+    "D": lambda: Dpr_move(1),
+    "E": lambda: D_move(2),
+    "F": lambda: F_move(1),
+    "G": lambda: Fpr_move(1),
+    "H": lambda: F_move(2)
+}
 
-# preventing pauses in the program
 while True:
-    pass
+    sequence = input("Enter a number to perform moves: ").strip()
+    sequence = sequence.replace(".","")
+
+    if sequence == "pi":
+        mp.dps = 10000
+        sequence = str(mp.pi).replace(".","")
+        print(sequence, type(sequence))
+
+    try:
+        sequence = np.base_repr(int(sequence),18)
+    except ValueError:
+        print("Not a number, continuing...")
+        continue
+
+    for move in sequence:
+        print(move,end="",flush=True)
+        moves[move]()
+    print()
